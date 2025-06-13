@@ -12,12 +12,7 @@ return {
       "hrsh7th/nvim-cmp", -- Ensure cmp is a dependency
     },
     config = function()
-      require("codeium").setup({
-        -- Explicitly enable codeium for cmp
-        enable_chat = true, -- User can disable if not needed
-      })
-      -- Reminder for authentication
-      print("Codeium: If not authenticated, run :Codeium Auth")
+      require("codeium").setup({})
     end,
   },
   {

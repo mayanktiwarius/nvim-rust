@@ -80,9 +80,7 @@ return {
           settings = {
             -- Enable rustfmt on save
             ['rust-analyzer'] = {
-              checkOnSave = {
-                command = "clippy",
-              },
+              checkOnSave = true,
               -- Automatic format on save
               format = {
                 enable = true,
@@ -112,13 +110,15 @@ return {
             if not mr.is_installed("codelldb") then
               vim.notify("Rustaceanvim: 'codelldb' is not installed via Mason. Please install it using :MasonInstall codelldb for Rust debugging.", vim.log.levels.WARN)
             else
-              local codelldb = mr.get_package("codelldb")
-              if not codelldb then
+              -- Get package details into a distinct variable
+              local codelldb_pkg = mr.get_package("codelldb")
+              if not codelldb_pkg then
                 vim.notify("Rustaceanvim: 'codelldb' is installed but Mason could not provide package details. Rust DAP setup skipped. You might need to run :MasonUpdate or check Mason's health.", vim.log.levels.WARN)
               else
-                local extension_path = codelldb:get_install_path()
+                -- Now it's safe to use codelldb_pkg
+                local extension_path = codelldb_pkg:get_install_path()
                 local codelldb_path = extension_path .. "adapter/codelldb"
-                local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+                local liblldb_path = extension_path .. "lldb/lib/liblldb.so" -- Assuming this path is correct based on codelldb structure
                 local cfg_rustacean = require('rustaceanvim.config')
 
                 vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
@@ -126,6 +126,7 @@ return {
                     adapter = cfg_rustacean.get_codelldb_adapter(codelldb_path, liblldb_path),
                   },
                 })
+                vim.notify("Rustaceanvim: Successfully configured DAP for codelldb.", vim.log.levels.INFO) -- Added success notification
               end
             end
           end)

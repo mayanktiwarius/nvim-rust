@@ -111,17 +111,21 @@ return {
             local mason_registry = require("mason-registry")
             if mason_registry.is_installed("codelldb") then
               local codelldb = mason_registry.get_package("codelldb")
-              local extension_path = codelldb:get_install_path() .. "/extension/"
-              local codelldb_path = extension_path .. "adapter/codelldb"
-              local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-              local cfg = require('rustaceanvim.config')
+              if not codelldb then
+                vim.notify("Rustaceanvim: Could not retrieve 'codelldb' package details from Mason. Rust DAP setup skipped.", vim.log.levels.WARN)
+              else
+                local extension_path = codelldb:get_install_path() .. "/extension/"
+                local codelldb_path = extension_path .. "adapter/codelldb"
+                local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+                local cfg = require('rustaceanvim.config')
 
-              -- Update rustaceanvim config with DAP settings
-              vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
-                dap = {
-                  adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
-                },
-              })
+                -- Update rustaceanvim config with DAP settings
+                vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
+                  dap = {
+                    adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+                  },
+                })
+              end
             end
           end)
         end,

@@ -116,17 +116,23 @@ return {
                 vim.notify("Rustaceanvim: 'codelldb' is installed but Mason could not provide package details. Rust DAP setup skipped. You might need to run :MasonUpdate or check Mason's health.", vim.log.levels.WARN)
               else
                 -- Now it's safe to use codelldb_pkg
-                local extension_path = codelldb_pkg:get_install_path()
-                local codelldb_path = extension_path .. "adapter/codelldb"
-                local liblldb_path = extension_path .. "lldb/lib/liblldb.so" -- Assuming this path is correct based on codelldb structure
+                local base_install_path = codelldb_pkg:get_install_path()
+                local codelldb_path = base_install_path .. "/extension/adapter/codelldb"
+                local liblldb_path = base_install_path .. "/extension/lldb/lib/liblldb.so"
+                vim.notify("Rustaceanvim DAP: CodeLLDB base path: " .. base_install_path, vim.log.levels.INFO)
+                vim.notify("Rustaceanvim DAP: CodeLLDB adapter path: " .. codelldb_path, vim.log.levels.INFO)
+                vim.notify("Rustaceanvim DAP: CodeLLDB library path: " .. liblldb_path, vim.log.levels.INFO)
                 local cfg_rustacean = require('rustaceanvim.config')
-
-                vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
-                  dap = {
-                    adapter = cfg_rustacean.get_codelldb_adapter(codelldb_path, liblldb_path),
-                  },
-                })
-                vim.notify("Rustaceanvim: Successfully configured DAP for codelldb.", vim.log.levels.INFO) -- Added success notification
+                if not cfg_rustacean or type(cfg_rustacean.get_codelldb_adapter) ~= "function" then
+                  vim.notify("Rustaceanvim: Error loading rustaceanvim.config or get_codelldb_adapter function missing. DAP setup skipped.", vim.log.levels.ERROR)
+                else
+                  vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
+                    dap = {
+                      adapter = cfg_rustacean.get_codelldb_adapter(codelldb_path, liblldb_path),
+                    },
+                  })
+                  vim.notify("Rustaceanvim: Successfully configured DAP for codelldb.", vim.log.levels.INFO) -- Added success notification
+                end
               end
             end
           end)

@@ -108,21 +108,22 @@ return {
         pattern = "LazyDone",
         callback = function()
           vim.schedule(function()
-            local mason_registry = require("mason-registry")
-            if mason_registry.is_installed("codelldb") then
-              local codelldb = mason_registry.get_package("codelldb")
+            local mr = require("mason-registry")
+            if not mr.is_installed("codelldb") then
+              vim.notify("Rustaceanvim: 'codelldb' is not installed via Mason. Please install it using :MasonInstall codelldb for Rust debugging.", vim.log.levels.WARN)
+            else
+              local codelldb = mr.get_package("codelldb")
               if not codelldb then
-                vim.notify("Rustaceanvim: Could not retrieve 'codelldb' package details from Mason. Rust DAP setup skipped.", vim.log.levels.WARN)
+                vim.notify("Rustaceanvim: 'codelldb' is installed but Mason could not provide package details. Rust DAP setup skipped. You might need to run :MasonUpdate or check Mason's health.", vim.log.levels.WARN)
               else
-                local extension_path = codelldb:get_install_path() .. "/extension/"
+                local extension_path = codelldb:get_install_path()
                 local codelldb_path = extension_path .. "adapter/codelldb"
                 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-                local cfg = require('rustaceanvim.config')
+                local cfg_rustacean = require('rustaceanvim.config')
 
-                -- Update rustaceanvim config with DAP settings
                 vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim, {
                   dap = {
-                    adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+                    adapter = cfg_rustacean.get_codelldb_adapter(codelldb_path, liblldb_path),
                   },
                 })
               end

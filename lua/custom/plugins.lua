@@ -167,31 +167,8 @@ return {
           },
         },
       }
-      require('cmp').setup.buffer({
-        sources = { { name = "crates" }}
-      })
+      -- cmp.setup.buffer call removed
     end
   },
-
-  {
-    "Exafunction/codeium.nvim",
-    event = "BufEnter",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup({})
-    end
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      local cmp = require("cmp")
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "codeium", priority = 1000 },
-      }))
-      return opts
-    end,
-  },
+  { import = "custom.configs.cmp" },
 }

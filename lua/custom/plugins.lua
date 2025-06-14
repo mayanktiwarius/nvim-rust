@@ -119,9 +119,9 @@ return {
                 local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/"
                 local codelldb_path = extension_path .. "adapter/codelldb"
                 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-                vim.notify("Rustaceanvim DAP: CodeLLDB extension path: " .. extension_path, vim.log.levels.INFO)
-                vim.notify("Rustaceanvim DAP: CodeLLDB adapter path: " .. codelldb_path, vim.log.levels.INFO)
-                vim.notify("Rustaceanvim DAP: CodeLLDB library path: " .. liblldb_path, vim.log.levels.INFO)
+                -- vim.notify("Rustaceanvim DAP: CodeLLDB extension path: " .. extension_path, vim.log.levels.INFO)
+                -- vim.notify("Rustaceanvim DAP: CodeLLDB adapter path: " .. codelldb_path, vim.log.levels.INFO)
+                -- vim.notify("Rustaceanvim DAP: CodeLLDB library path: " .. liblldb_path, vim.log.levels.INFO)
                 local cfg_rustacean = require('rustaceanvim.config')
                 if not cfg_rustacean or type(cfg_rustacean.get_codelldb_adapter) ~= "function" then
                   vim.notify("Rustaceanvim: Error loading rustaceanvim.config or get_codelldb_adapter function missing. DAP setup skipped.", vim.log.levels.ERROR)
@@ -131,7 +131,7 @@ return {
                       adapter = cfg_rustacean.get_codelldb_adapter(codelldb_path, liblldb_path),
                     },
                   })
-                  vim.notify("Rustaceanvim: Successfully configured DAP for codelldb.", vim.log.levels.INFO) -- Added success notification
+                  -- vim.notify("Rustaceanvim: Successfully configured DAP for codelldb.", vim.log.levels.INFO) -- Added success notification
                 end
               end
             end

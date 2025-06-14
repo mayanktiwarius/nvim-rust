@@ -116,10 +116,10 @@ return {
                 vim.notify("Rustaceanvim: 'codelldb' is installed but Mason could not provide package details. Rust DAP setup skipped. You might need to run :MasonUpdate or check Mason's health.", vim.log.levels.WARN)
               else
                 -- Now it's safe to use codelldb_pkg
-                local base_install_path = codelldb_pkg:get_install_path()
-                local codelldb_path = base_install_path .. "/extension/adapter/codelldb"
-                local liblldb_path = base_install_path .. "/extension/lldb/lib/liblldb.so"
-                vim.notify("Rustaceanvim DAP: CodeLLDB base path: " .. base_install_path, vim.log.levels.INFO)
+                local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/"
+                local codelldb_path = extension_path .. "adapter/codelldb"
+                local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+                vim.notify("Rustaceanvim DAP: CodeLLDB extension path: " .. extension_path, vim.log.levels.INFO)
                 vim.notify("Rustaceanvim DAP: CodeLLDB adapter path: " .. codelldb_path, vim.log.levels.INFO)
                 vim.notify("Rustaceanvim DAP: CodeLLDB library path: " .. liblldb_path, vim.log.levels.INFO)
                 local cfg_rustacean = require('rustaceanvim.config')

@@ -1,3 +1,10 @@
+-- Prepend NvChad custom paths for diagnostics
+local config_path = vim.fn.stdpath("config")
+package.path = config_path .. "/lua/custom/?.lua;" .. package.path
+package.path = config_path .. "/lua/custom/?/init.lua;" .. package.path
+package.path = config_path .. "/lua/?.lua;" .. package.path
+package.path = config_path .. "/lua/?/init.lua;" .. package.path
+
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 

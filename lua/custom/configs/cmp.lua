@@ -4,17 +4,7 @@ local types = require("cmp.types")
 local luasnip = require("luasnip") -- Assuming NvChad includes LuaSnip or it's added separately
 
 return {
-  {
-    "Exafunction/codeium.nvim",
-    event = "BufEnter",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp", -- Ensure cmp is a dependency
-    },
-    config = function()
-      require("codeium").setup({})
-    end,
-  },
+
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter", -- Load cmp when entering insert mode
@@ -31,7 +21,6 @@ return {
 
       -- Augment NvChad's cmp config
       cmp_config.sources = cmp.config.sources({
-        { name = "codeium", priority = 100, group_index = 1 }, -- High priority for Codeium
         { name = "nvim_lsp", group_index = 1 },
         { name = "luasnip", group_index = 1 },
         { name = "buffer", group_index = 2 },

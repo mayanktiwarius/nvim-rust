@@ -1,5 +1,23 @@
 return {
   {
+    "NeogitOrg/neogit",
+    dependencies = { "nvim-lua/plenary.nvim",
+      {
+        "sindrets/diffview.nvim",
+        config = function()
+          require("diffview").setup({})
+        end
+      }
+    }
+  },
+  -- {
+  --   'sindrets/diffview.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   config = function()
+  --     require("diffview").setup({})
+  --   end
+  -- },
+  {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     cmd = "Mason",

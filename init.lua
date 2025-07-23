@@ -49,3 +49,12 @@ vim.keymap.set("n", '<leader>y',
     local filter = { bufnr = bufnr }
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(filter), filter)
 end)
+
+require('neogit').setup {
+  integrations = {
+    diffview = true --Enables split diff view
+  }
+}
+
+
+

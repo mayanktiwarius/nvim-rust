@@ -47,3 +47,14 @@ map("t", "<Esc>", [[<C-\><C-n>]], { desc = "Terminal normal mode" })
 
 -- rustaceanvim
 map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables" })
+
+-- Git
+map("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>")
+map("n", "<leader>gb", "<cmd>Git blame<cr>")
+map("n", "<leader>gl", "<cmd>Git log --oneline --graph --decorate --all<cr>")
+map("n", "gfd", "<cmd>Gitsigns diffthis<CR>", { desc = "Git: diff current file" })
+
+-- yank/paste to clipboard
+map({ "n", "v" }, "<leader>y", [["+y]])
+map({ "n", "v" }, "<leader>p", [["+p]])
+

@@ -183,4 +183,47 @@ return {
     end
   },
   { import = "custom.configs.cmp" },
+  -- Python LSP
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("lspconfig").pyright.setup({})
+    end,
+  },
+  
+  -- Formatters and Linters
+  {
+    "nvimtools/none-ls.nvim",
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.isort,
+          null_ls.builtins.diagnostics.flake8,
+        },
+      })
+    end,
+  },
+  
+  -- Debugging
+  {
+    "mfussenegger/nvim-dap-python",
+    config = function()
+      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+    end,
+  },
+  
+  -- Testing
+  {
+    "nvim-neotest/neotest",
+    dependencies = { "nvim-neotest/neotest-python" },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({ dap = { justMyCode = false } }),
+        },
+      })
+    end,
+  }
 }

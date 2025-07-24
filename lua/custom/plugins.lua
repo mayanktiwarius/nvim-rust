@@ -11,11 +11,52 @@ return {
     }
   },
   {
+      "LunarVim/bigfile.nvim",
+      config = function()
+          require("bigfile").setup({
+              filesize = 2, -- Size in MiB (default)
+              pattern = { "*" },
+              features = {  -- features to disable for big files
+                  "indent_blankline",
+                  "illuminate",
+                  "lsp",
+                  "treesitter",
+                  "syntax",
+                  "matchparen",
+                  "vimopts",
+                  "filetype",
+              }
+          })
+      end
+  },
+  {
+      'linux-cultist/venv-selector.nvim',
+      event = 'VeryLazy',
+      dependencies = {
+          'neovim/nvim-lspconfig',
+          'nvim-telescope/telescope.nvim',
+          'mfussenegger/nvim-dap-python',
+      },
+      branch = "regexp",
+      config = function()
+          local function shorter_name(filename)
+              return filename:gsub(os.getenv("HOME"), "~"):gsub("/bin/python", "")
+          end
+          require('venv-selector').setup {
+              options = { on_telescope_result_callback = shorter_name },
+              name = { ".venv" },
+              auto_refresh = false
+          }
+      end,
+      
+  },
+  {
       "OXY2DEV/markview.nvim",
       lazy = false,
+      priority = 49,
       dependencies = {
           "nvim-treesitter/nvim-treesitter",
-          "nvim-tree/nvim-web-devicons"
+          "nvim-tree/nvim-web-devicons",
       }
   },
   {

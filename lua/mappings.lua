@@ -58,3 +58,7 @@ map("n", "gfd", "<cmd>Gitsigns diffthis<CR>", { desc = "Git: diff current file" 
 map({ "n", "v" }, "<leader>y", [["+y]])
 map({ "n", "v" }, "<leader>p", [["+p]])
 
+-- ufo
+local ufo = require("ufo")
+vim.keymap.set('n', 'zR', ufo.openAllFolds)
+vim.keymap.set('n', 'zM', ufo.closeAllFolds)

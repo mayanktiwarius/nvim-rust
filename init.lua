@@ -56,5 +56,13 @@ require('neogit').setup {
   }
 }
 
+-- init.lua: Bootstrap Lazy.nvim and load plugins
+-- require("lazy").setup({
+--   spec = {
+--     { import = "plugins.java" },
+--     { import = "plugins.treesitter" },
+--     { import = "plugins.dap" },
+--   },
+-- })
 
 

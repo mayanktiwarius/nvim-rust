@@ -10,6 +10,78 @@ return {
       }
     }
   },
+  -- plugins/java.lua: Java LSP setup using nvim-jdtls
+  {
+    {
+      "mfussenegger/nvim-jdtls",
+      ft = "java",
+      config = function()
+        local jdtls = require("jdtls")
+        local home = os.getenv("HOME")
+        local workspace_dir = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+  
+        local config = {
+          cmd = {
+            "java",
+            "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+            "-Dosgi.bundles.defaultStartLevel=4",
+            "-Declipse.product=org.eclipse.jdt.ls.core.product",
+            "-Dlog.level=ALL",
+            "-Xms1g",
+            "--add-modules=ALL-SYSTEM",
+            "--add-opens", "java.base/java.util=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+            "-jar", home .. "/.local/share/nvim/jdtls/plugins/org.eclipse.equinox.launcher_*.jar",
+            "-configuration", home .. "/.local/share/nvim/jdtls/config_linux",
+            "-data", workspace_dir,
+          },
+          root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
+        }
+  
+        jdtls.start_or_attach(config)
+      end,
+    },
+  },
+-- plugins/treesitter.lua: Treesitter setup for Java
+  {
+    {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      config = function()
+        require("nvim-treesitter.configs").setup {
+          ensure_installed = { "java", "lua", "rust" },
+          highlight = { enable = true },
+        }
+      end,
+    },
+  },
+-- plugins/dap.lua: Debug Adapter Protocol setup for Java
+  {
+    {
+      "mfussenegger/nvim-dap",
+      config = function()
+        local dap = require("dap")
+        dap.adapters.java = function(callback)
+          callback({
+            type = "server",
+            host = "127.0.0.1",
+            port = 5005,
+          })
+        end
+        dap.configurations.java = {
+          {
+            type = "java",
+            request = "attach",
+            name = "Attach to Java Process",
+            hostName = "127.0.0.1",
+            port = 5005,
+          },
+        }
+      end,
+    },
+  },
+
+
   {
       "LunarVim/bigfile.nvim",
       config = function()

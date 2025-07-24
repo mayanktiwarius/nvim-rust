@@ -43,7 +43,7 @@ vim.schedule(function()
   require "mappings"
 end)
 
-vim.keymap.set("n", '<leader>y',
+vim.keymap.set("n", '<leader>k',
   function()
     local bufnr = vim.api.nvim_get_current_buf()
     local filter = { bufnr = bufnr }

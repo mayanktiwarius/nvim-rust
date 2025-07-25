@@ -29,33 +29,343 @@ return {
           })
       end
   },
-  -- {
-  --   {
-  --     "ray-x/go.nvim",
-  --     dependencies = { "ray-x/guihua.lua" },
-  --     ft = { "go", "gomod" },
-  --     config = function()
-  --       require("go").setup()
-  --     end,
-  --   },
-  --   {
-  --     "neovim/nvim-lspconfig",
-  --     ft = "go",
-  --     config = function()
-  --       require("lspconfig").gopls.setup {
-  --         cmd = { "gopls" },
-  --         settings = {
-  --           gopls = {
-  --             analyses = {
-  --               unusedparams = true,
-  --             },
-  --             staticcheck = true,
-  --           },
-  --         },
-  --       }
-  --     end,
-  --   },
-  -- },
+  {
+    "romgrk/barbar.nvim",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons", -- patched fonts support 
+        "lewis6991/gitsigns.nvim" -- display git status
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+    config = function()
+        local barbar = require("barbar")
+
+        barbar.setup({
+            clickable = true, -- Enables/disables clickable tabs
+            tabpages = false, -- Enable/disables current/total tabpages indicator (top right corner)
+            insert_at_end = true,
+            icons = {
+                button = "",
+                buffer_index = true,
+                filetype = {enabled = true},
+                visible = {modified = {buffer_number = false}},
+                gitsigns = {
+                    added = {enabled = true, icon = "+"},
+                    changed = {enabled = true, icon = "~"},
+                    deleted = {enabled = true, icon = "-"}
+                }
+            }
+        })
+
+        -- key maps
+
+        local map = vim.api.nvim_set_keymap
+        local opts = {noremap = true, silent = true}
+
+        -- Move to previous/next
+        map("n", "<A-,>", "<Cmd>BufferPrevious<CR>", opts)
+        map("n", "<A-.>", "<Cmd>BufferNext<CR>", opts)
+        -- Re-order to previous/next
+        map("n", "<A-<>", "<Cmd>BufferMovePrevious<CR>", opts)
+        map("n", "<A->>", "<Cmd>BufferMoveNext<CR>", opts)
+        -- Goto buffer in position...
+        map("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", opts)
+        map("n", "<A-2>", "<Cmd>BufferGoto 2<CR>", opts)
+        map("n", "<A-3>", "<Cmd>BufferGoto 3<CR>", opts)
+        map("n", "<A-4>", "<Cmd>BufferGoto 4<CR>", opts)
+        map("n", "<A-5>", "<Cmd>BufferGoto 5<CR>", opts)
+        map("n", "<A-6>", "<Cmd>BufferGoto 6<CR>", opts)
+        map("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", opts)
+        map("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", opts)
+        map("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", opts)
+        map("n", "<A-0>", "<Cmd>BufferLast<CR>", opts)
+        -- Pin/unpin buffer
+        map("n", "<A-p>", "<Cmd>BufferPin<CR>", opts)
+        -- Close buffer
+        map("n", "<A-c>", "<Cmd>BufferClose<CR>", opts)
+        map("n", "<A-b>", "<Cmd>BufferCloseAllButCurrent<CR>", opts)
+    end
+  },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    tag = "v1.7.0",
+    enabled = true,
+    priority = 1000,
+    config = function()
+        vim.opt.termguicolors = true
+
+        local catppuccin = require("catppuccin")
+
+        catppuccin.setup({
+            flavour = "mocha",
+            term_colors = true,
+            styles = {
+                conditionals = {},
+                functions = {"italic"},
+                types = {"bold"}
+            },
+            color_overrides = {
+                mocha = {
+                    base = "#171717", -- background
+                    surface2 = "#9A9A9A", -- comments
+                    text = "#F6F6F6"
+                }
+            },
+            highlight_overrides = {
+                mocha = function(C)
+                    return {
+                        NvimTreeNormal = {bg = C.none},
+                        CmpBorder = {fg = C.surface2},
+                        Pmenu = {bg = C.none},
+                        NormalFloat = {bg = C.none},
+                        TelescopeBorder = {link = "FloatBorder"}
+                    }
+                end
+            },
+            integrations = {
+                barbar = true,
+                cmp = true,
+                gitsigns = true,
+                native_lsp = {enabled = true},
+                nvimtree = true,
+                telescope = true,
+                treesitter = true,
+                treesitter_context = true
+            }
+        })
+
+        vim.cmd.colorscheme("catppuccin")
+    end
+ },
+  {
+    "rhysd/vim-clang-format",
+    init = function()
+        vim.cmd([[
+autocmd FileType proto ClangFormatAutoEnable
+]])
+    end
+ },
+{
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+        "hrsh7th/cmp-nvim-lsp", -- cmp_nvim_lsp
+        "neovim/nvim-lspconfig", -- lspconfig
+        "onsails/lspkind-nvim", -- lspkind (VS pictograms)
+        {
+            "L3MON4D3/LuaSnip",
+            version = "v2.*",
+            build = "make install_jsregexp",
+            dependencies = {"rafamadriz/friendly-snippets"}, -- Snippets
+            config = function()
+                require("luasnip.loaders.from_vscode").lazy_load()
+                -- https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/go.json
+            end
+        }, {"saadparwaiz1/cmp_luasnip", enabled = true}
+    },
+    config = function()
+        local luasnip = require("luasnip")
+        local types = require("luasnip.util.types")
+
+        -- Display virtual text to indicate snippet has more nodes
+        luasnip.config.setup({
+            ext_opts = {
+                [types.choiceNode] = {
+                    active = {virt_text = {{"⇥", "GruvboxRed"}}}
+                },
+                [types.insertNode] = {
+                    active = {virt_text = {{"⇥", "GruvboxBlue"}}}
+                }
+            }
+        })
+
+        local cmp = require("cmp")
+        local lspkind = require("lspkind")
+
+        cmp.setup({
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end
+            },
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered()
+            },
+            mapping = cmp.mapping.preset.insert({
+                ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-e>"] = cmp.mapping.abort(),
+                ["<CR>"] = cmp.mapping.confirm({select = true}),
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    elseif luasnip.locally_jumpable(1) then
+                        luasnip.jump(1)
+                    else
+                        fallback()
+                    end
+                end, {"i", "s"})
+            }),
+            sources = cmp.config.sources({
+                {name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}
+            }),
+            formatting = {
+                format = lspkind.cmp_format({
+                    mode = "symbol_text",
+                    maxwidth = 70,
+                    show_labelDetails = true
+                })
+            }
+        })
+
+        local lspconfig = require("lspconfig")
+
+        -- All languages: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
+        -- Default lspconfig values for Go are set by `navigator`
+        -- Go: go install golang.org/x/tools/gopls@latest
+
+        -- Python: brew install pyright
+        lspconfig["pyright"].setup {}
+
+        -- Ruby: gem install solargraph
+        lspconfig["solargraph"].setup {}
+
+        -- https://phpactor.readthedocs.io/en/master/usage/standalone.html#installation
+        lspconfig["phpactor"].setup {}
+    end
+ },
+ {
+    "numToStr/Comment.nvim",
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    config = function() require("Comment").setup() end
+ },
+ {"chrisbra/csv.vim", enabled = true},
+ {
+    "nvim-lualine/lualine.nvim",
+    dependencies = {"nvim-tree/nvim-web-devicons", "catppuccin/nvim"},
+    config = function()
+        require("lualine").setup({options = {theme = "catppuccin"}})
+    end
+ }, 
+ {
+    "ray-x/navigator.lua",
+    dependencies = {
+        {"hrsh7th/nvim-cmp"}, {"nvim-treesitter/nvim-treesitter"},
+        {"ray-x/guihua.lua", run = "cd lua/fzy && make"}, {
+            "ray-x/go.nvim",
+            event = {"CmdlineEnter"},
+            ft = {"go", "gomod"},
+            build = ':lua require("go.install").update_all_sync()'
+        }, {
+            "ray-x/lsp_signature.nvim", -- Show function signature when you type
+            event = "VeryLazy",
+            config = function() require("lsp_signature").setup() end
+        }
+    },
+    config = function()
+        require("go").setup()
+        require("navigator").setup({
+            lsp_signature_help = true, -- enable ray-x/lsp_signature
+            lsp = {format_on_save = true}
+        })
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {"go"},
+            callback = function(ev)
+                -- CTRL/control keymaps
+                vim.api
+                    .nvim_buf_set_keymap(0, "n", "<C-i>", ":GoImport<CR>", {})
+                vim.api.nvim_buf_set_keymap(0, "n", "<C-b>", ":GoBuild %:h<CR>",
+                                            {})
+                vim.api.nvim_buf_set_keymap(0, "n", "<C-t>", ":GoTestPkg<CR>",
+                                            {})
+                vim.api.nvim_buf_set_keymap(0, "n", "<C-c>",
+                                            ":GoCoverage -p<CR>", {})
+
+                -- Opens test files
+                vim.api.nvim_buf_set_keymap(0, "n", "A",
+                                            ":lua require('go.alternate').switch(true, '')<CR>",
+                                            {}) -- Test
+                vim.api.nvim_buf_set_keymap(0, "n", "V",
+                                            ":lua require('go.alternate').switch(true, 'vsplit')<CR>",
+                                            {}) -- Test Vertical
+                vim.api.nvim_buf_set_keymap(0, "n", "S",
+                                            ":lua require('go.alternate').switch(true, 'split')<CR>",
+                                            {}) -- Test Split
+            end,
+            group = vim.api.nvim_create_augroup("go_autocommands",
+                                                {clear = true})
+        })
+    end
+ },
+ {
+    "nvim-treesitter/nvim-treesitter",
+    tag = "v0.9.2",
+    build = ":TSUpdate",
+    dependencies = {
+        {"nvim-treesitter/nvim-treesitter-textobjects"}, -- Syntax aware text-objects
+        {
+            "nvim-treesitter/nvim-treesitter-context", -- Show code context
+            opts = {enable = true, mode = "topline", line_numbers = true}
+        }
+    },
+    config = function()
+        local treesitter = require("nvim-treesitter.configs")
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = {"markdown"},
+            callback = function(ev)
+                -- treesitter-context is buggy with Markdown files
+                require("treesitter-context").disable()
+            end
+        })
+
+        treesitter.setup({
+            ensure_installed = {
+                "csv", "dockerfile", "gitignore", "go", "gomod", "gosum",
+                "gowork", "javascript", "json", "lua", "markdown", "proto",
+                "python", "rego", "ruby", "sql", "svelte", "yaml", "php"
+            },
+            indent = {enable = true},
+            auto_install = true,
+            sync_install = false,
+            highlight = {
+                enable = true,
+                disable = {"csv"} -- preferring chrisbra/csv.vim
+            },
+            textobjects = {select = {enable = true, lookahead = true}}
+        })
+    end
+ }, 
+  {
+    {
+      "ray-x/go.nvim",
+      dependencies = { "ray-x/guihua.lua" },
+      ft = { "go", "gomod" },
+      config = function()
+        require("go").setup()
+      end,
+    },
+    {
+      "neovim/nvim-lspconfig",
+      ft = "go",
+      config = function()
+        require("lspconfig").gopls.setup {
+          cmd = { "gopls" },
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+              },
+              staticcheck = true,
+            },
+          },
+        }
+      end,
+    },
+  },
 
   {
       'linux-cultist/venv-selector.nvim',

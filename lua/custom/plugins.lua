@@ -29,6 +29,34 @@ return {
           })
       end
   },
+  -- {
+  --   {
+  --     "ray-x/go.nvim",
+  --     dependencies = { "ray-x/guihua.lua" },
+  --     ft = { "go", "gomod" },
+  --     config = function()
+  --       require("go").setup()
+  --     end,
+  --   },
+  --   {
+  --     "neovim/nvim-lspconfig",
+  --     ft = "go",
+  --     config = function()
+  --       require("lspconfig").gopls.setup {
+  --         cmd = { "gopls" },
+  --         settings = {
+  --           gopls = {
+  --             analyses = {
+  --               unusedparams = true,
+  --             },
+  --             staticcheck = true,
+  --           },
+  --         },
+  --       }
+  --     end,
+  --   },
+  -- },
+
   {
       'linux-cultist/venv-selector.nvim',
       event = 'VeryLazy',

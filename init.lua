@@ -56,5 +56,12 @@ require('neogit').setup {
   }
 }
 
+require('lspconfig').gopls.setup({
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  root_dir = require('lspconfig/util').root_pattern("go.work", "go.mod", ".git"),
+})
 
+
+require("go").setup()
 

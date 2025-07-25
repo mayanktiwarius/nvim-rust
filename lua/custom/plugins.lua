@@ -356,31 +356,16 @@ autocmd FileType proto ClangFormatAutoEnable
     end
  }, 
   {
-    {
-      "ray-x/go.nvim",
-      dependencies = { "ray-x/guihua.lua" },
-      ft = { "go", "gomod" },
-      config = function()
-        require("go").setup()
-      end,
-    },
-    {
-      "neovim/nvim-lspconfig",
-      ft = "go",
-      config = function()
-        require("lspconfig").gopls.setup {
-          cmd = { "gopls" },
-          settings = {
-            gopls = {
-              analyses = {
-                unusedparams = true,
-              },
-              staticcheck = true,
-            },
-          },
-        }
-      end,
-    },
+    "ray-x/go.nvim",
+    dependencies = { "ray-x/guihua.lua" },
+    ft = { "go", "gomod" },
+    config = function()
+      require("go").setup({
+        lsp_cfg = true, -- auto-configure gopls
+        lsp_on_attach = true,
+        dap_debug = true,
+      })
+    end,
   },
 
   {

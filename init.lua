@@ -56,12 +56,42 @@ require('neogit').setup {
   }
 }
 
-require('lspconfig').gopls.setup({
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
-  root_dir = require('lspconfig/util').root_pattern("go.work", "go.mod", ".git"),
-})
-
-
-require("go").setup()
+-- require('lspconfig').gopls.setup({
+--   cmd = { "gopls" },
+--   filetypes = { "go", "gomod", "gowork", "gotmpl" },
+--   root_dir = require('lspconfig/util').root_pattern("go.work", "go.mod", ".git"),
+-- })
+--
+--
+-- require("go").setup({
+--   lsp_cfg = {
+--     cmd = {"gopls"},
+--     filetypes = {"go", "gomod"},
+--     root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
+--     settings = {
+--       gopls = {
+--         analyses = {
+--           unusedparams = true,
+--         },
+--         staticcheck = true,
+--       },
+--     },
+--   },
+-- })
+-- require'nvim-treesitter.configs'.setup {
+--   ensure_installed = {
+--     "go", "gomod", "gowork", "lua", "json", "bash", -- add others as needed
+--   },
+--   highlight = {
+--     enable = true,
+--   },
+-- }
+require("nvim-treesitter.configs").setup {
+  ensure_installed = {
+    "go", "lua", "query", "json", "bash"
+  },
+  highlight = {
+    enable = false,
+  },
+}
 

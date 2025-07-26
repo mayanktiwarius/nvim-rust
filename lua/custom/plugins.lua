@@ -53,7 +53,7 @@ return {
                 runtimes = {
                   {
                     name = "JavaSE-21",
-                    path = "/path/to/jdk-21",
+                    path = "/Users/mtiwar006@cable.comcast.com/.sdkman/candidates/java/current/bin/java",
                   },
                 },
               },

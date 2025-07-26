@@ -10,6 +10,70 @@ return {
       }
     }
   },
+  -- {
+  --   {
+  --     "nvim-java/nvim-java",
+  --     dependencies = {
+  --       "nvim-java/lua-async-await",
+  --       "nvim-java/nvim-java-core",
+  --       "nvim-java/nvim-java-test",
+  --       "nvim-java/nvim-java-dap",
+  --       "nvim-java/nvim-java-refactor",
+  --     },
+  --     config = function()
+  --       require("java").setup()
+  --     end,
+  --     ft = { "java" }, -- Only load for Java files
+  --   },
+  -- },
+  {
+    {
+      "mfussenegger/nvim-jdtls",
+      ft = { "java" },
+      config = function()
+        local jdtls = require("jdtls")
+  
+        local home = os.getenv("HOME")
+        local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+        local root_dir = require("jdtls.setup").find_root(root_markers)
+        if not root_dir then return end
+  
+        local project_name = vim.fn.fnamemodify(root_dir, ":p:h:t")
+        local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
+  
+        local config = {
+          cmd = {
+            vim.fn.stdpath("data") .. "/mason/bin/jdtls",
+            "-data", workspace_dir,
+          },
+          root_dir = root_dir,
+          settings = {
+            java = {
+              configuration = {
+                runtimes = {
+                  {
+                    name = "JavaSE-21",
+                    path = "/Users/mtiwar006@cable.comcast.com/.sdkman/candidates/java/current/bin/java",
+                  },
+                },
+              },
+            },
+          },
+          init_options = {
+            bundles = {},
+          },
+          on_attach = function(client, bufnr)
+            jdtls.setup_dap({ hotcodereplace = "auto" })
+            jdtls.dap.setup_dap_main_class_configs()
+            jdtls.setup.add_commands()
+          end,
+        }
+  
+        jdtls.start_or_attach(config)
+      end,
+    },
+  },
+
   {
       "LunarVim/bigfile.nvim",
       config = function()
@@ -610,6 +674,7 @@ autocmd FileType proto ClangFormatAutoEnable
   },
   {
     "williamboman/mason.nvim",
+    -- version = "1.10.0", -- or any version before 2.0
     build = ":MasonUpdate",
     cmd = "Mason",
     config = function()

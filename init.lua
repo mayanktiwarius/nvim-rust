@@ -95,3 +95,7 @@ require("nvim-treesitter.configs").setup {
   },
 }
 
+-- require('telescope.builtin').lsp_definitions()
+-- require('telescope.builtin').lsp_references()
+-- require('telescope.builtin').lsp_document_symbols()
+

@@ -365,6 +365,27 @@ autocmd FileType proto ClangFormatAutoEnable
     end
  },
  {
+   "dakota-m/terraform.nvim",
+   ft = { "terraform", "hcl" },
+   dependencies = {
+     "nvim-lua/plenary.nvim",
+     "nvim-telescope/telescope.nvim",
+     "MunifTanjim/nui.nvim",
+   },
+   config = function()
+     require("terraform").setup()
+   end,
+ },
+   
+ {
+   "hashivim/vim-terraform",
+   ft = { "terraform", "tf" },
+   config = function()
+     vim.g.terraform_align = 1
+     vim.g.terraform_fmt_on_save = 1
+   end,
+ },
+ {
     "nvim-treesitter/nvim-treesitter",
     tag = "v0.9.2",
     build = ":TSUpdate",
@@ -390,7 +411,8 @@ autocmd FileType proto ClangFormatAutoEnable
             ensure_installed = {
                 "csv", "dockerfile", "gitignore", "go", "gomod", "gosum",
                 "gowork", "javascript", "json", "lua", "markdown", "proto",
-                "python", "rego", "ruby", "sql", "svelte", "yaml", "php"
+                "python", "rego", "ruby", "sql", "svelte", "yaml", "php",
+                "terraform", "hcl"
             },
             indent = {enable = true},
             auto_install = true,
@@ -728,6 +750,12 @@ autocmd FileType proto ClangFormatAutoEnable
     config = function()
       require "configs.lspconfig"
     end,
+    opts = {
+      servers = {
+        terraformls = {},
+        tflint = {},
+      },
+    },    
   },
 
   {
@@ -875,6 +903,8 @@ autocmd FileType proto ClangFormatAutoEnable
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
           null_ls.builtins.diagnostics.flake8,
+          null_ls.builtins.formatting.terraform_fmt,
+          null_ls.builtins.diagnostics.tflint,         
         },
       })
     end,

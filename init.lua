@@ -99,3 +99,8 @@ require("nvim-treesitter.configs").setup {
 -- require('telescope.builtin').lsp_references()
 -- require('telescope.builtin').lsp_document_symbols()
 
+require("mason").setup()
+require("mason-lspconfig").setup {
+  ensure_installed = { "terraformls", "tflint" }
+}
+

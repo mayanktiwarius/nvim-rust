@@ -10,6 +10,14 @@ return {
       }
     }
   },
+  {
+    "preservim/tagbar",
+    cmd = "TagbarToggle",
+    keys = {
+      { "<F8>", "<cmd>TagbarToggle<CR>", desc = "Toggle Tagbar" },
+    },
+  },
+
   -- {
   --   {
   --     "nvim-java/nvim-java",

@@ -88,12 +88,20 @@ require('neogit').setup {
 -- }
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
-    "go", "lua", "query", "json", "bash"
+    "go", "lua", "query", "json", "bash", "python"
   },
   highlight = {
-    enable = false,
+    enable = true, -- enable highlighting if you want it
+    disable = { "python" }, -- disable for Python if it's causing issues
+  },
+  textobjects = {
+    move = {
+      enable = true,
+      disable = { "python" }, -- disable move module for Python
+    },
   },
 }
+
 
 -- require('telescope.builtin').lsp_definitions()
 -- require('telescope.builtin').lsp_references()

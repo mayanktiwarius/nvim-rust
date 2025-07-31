@@ -92,12 +92,12 @@ require("nvim-treesitter.configs").setup {
   },
   highlight = {
     enable = true, -- enable highlighting if you want it
-    disable = { "python" }, -- disable for Python if it's causing issues
+    disable = { "go", "python" }, -- disable for Python if it's causing issues
   },
   textobjects = {
     move = {
       enable = true,
-      disable = { "python" }, -- disable move module for Python
+      disable = { "go","python" }, -- disable move module for Python
     },
   },
 }

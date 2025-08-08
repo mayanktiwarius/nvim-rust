@@ -88,19 +88,25 @@ require('neogit').setup {
 -- }
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
-    "go", "lua", "query", "json", "bash", "python"
+    "go", "lua", "query", "json", "bash", "python", "cpp", "c"
   },
   highlight = {
-    enable = true, -- enable highlighting if you want it
-    disable = { "go", "python" }, -- disable for Python if it's causing issues
+    enable = true,
+    disable = { "go", "python", "cpp", "c" }, -- keep disabled only if needed
   },
   textobjects = {
     move = {
       enable = true,
-      disable = { "go","python" }, -- disable move module for Python
+      disable = { "go", "python", "cpp", "c" }, -- allow move for cpp
     },
   },
 }
+require("lspconfig").clangd.setup {
+  cmd = { "clangd", "--background-index" },
+  filetypes = { "c", "cpp", "objc", "objcpp" },
+  root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
+}
+
 
 
 -- require('telescope.builtin').lsp_definitions()

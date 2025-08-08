@@ -18,6 +18,19 @@ return {
     },
   },
 
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
+  {
+    "simrat39/symbols-outline.nvim",
+    config = function()
+      require("symbols-outline").setup()
+    end,
+  },
+
+
+
   -- {
   --   {
   --     "nvim-java/nvim-java",

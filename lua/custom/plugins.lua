@@ -461,13 +461,17 @@ autocmd FileType proto ClangFormatAutoEnable
 
   {
       'linux-cultist/venv-selector.nvim',
+      opts = {
+        rocks = {
+          hererocks = false,
+        },
+      },
       event = 'VeryLazy',
       dependencies = {
           'neovim/nvim-lspconfig',
           'nvim-telescope/telescope.nvim',
           'mfussenegger/nvim-dap-python',
       },
-      branch = "regexp",
       config = function()
           local function shorter_name(filename)
               return filename:gsub(os.getenv("HOME"), "~"):gsub("/bin/python", "")
@@ -907,13 +911,13 @@ autocmd FileType proto ClangFormatAutoEnable
   },
   { import = "custom.configs.cmp" },
   -- Python LSP
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("lspconfig").pyright.setup({})
-    end,
-  },
-  
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   config = function()
+  --     local lspconfig = require("lspconfig")
+  --     lspconfig["pyright"].setup {}
+  --   end,
+  -- },
   -- Formatters and Linters
   {
     "nvimtools/none-ls.nvim",

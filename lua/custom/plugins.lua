@@ -304,7 +304,8 @@ autocmd FileType proto ClangFormatAutoEnable
             }
         })
 
-        local lspconfig = require("lspconfig")
+        -- local lspconfig = vim.lsp.config
+        local lspconfig = vim.lsp.config 
 
         -- All languages: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
@@ -914,7 +915,7 @@ autocmd FileType proto ClangFormatAutoEnable
   -- {
   --   "neovim/nvim-lspconfig",
   --   config = function()
-  --     local lspconfig = require("lspconfig")
+  --     local lspconfig = vim.lsp.config
   --     lspconfig["pyright"].setup {}
   --   end,
   -- },

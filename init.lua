@@ -56,7 +56,7 @@ require('neogit').setup {
   }
 }
 
--- require('lspconfig').gopls.setup({
+-- vim.lsp.config.gopls.setup({
 --   cmd = { "gopls" },
 --   filetypes = { "go", "gomod", "gowork", "gotmpl" },
 --   root_dir = require('lspconfig/util').root_pattern("go.work", "go.mod", ".git"),
@@ -67,7 +67,7 @@ require('neogit').setup {
 --   lsp_cfg = {
 --     cmd = {"gopls"},
 --     filetypes = {"go", "gomod"},
---     root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
+--     root_dir = vim.lsp.config.util.root_pattern("go.work", "go.mod", ".git"),
 --     settings = {
 --       gopls = {
 --         analyses = {
@@ -101,12 +101,12 @@ require("nvim-treesitter.configs").setup {
     },
   },
 }
-require("lspconfig").clangd.setup {
-  cmd = { "clangd", "--background-index" },
-  filetypes = { "c", "cpp", "objc", "objcpp" },
-  root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
-}
-
+-- require("lspconfig.configs").clangd.setup {
+--   cmd = { "clangd", "--background-index" },
+--   filetypes = { "c", "cpp", "objc", "objcpp" },
+--   root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
+-- }
+--
 
 
 -- require('telescope.builtin').lsp_definitions()
@@ -118,3 +118,10 @@ require("mason-lspconfig").setup {
   ensure_installed = { "terraformls", "tflint" }
 }
 
+require('telescope').setup {
+  defaults = {
+    preview = {
+      treesitter = false
+    }
+  }
+}

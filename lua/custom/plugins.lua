@@ -912,13 +912,16 @@ autocmd FileType proto ClangFormatAutoEnable
   },
   { import = "custom.configs.cmp" },
   -- Python LSP
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   config = function()
-  --     local lspconfig = vim.lsp.config
-  --     lspconfig["pyright"].setup {}
-  --   end,
-  -- },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      -- local lspconfig = vim.lsp.config
+      -- local lspconfig = require("lspconfig")
+      -- lspconfig["pyright"].setup {}
+      -- vim.lsp.config.pyright.setup({})
+      vim.lsp.enable("pyright")
+    end,
+  },
   -- Formatters and Linters
   {
     "nvimtools/none-ls.nvim",

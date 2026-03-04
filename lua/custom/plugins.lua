@@ -10,22 +10,6 @@ return {
       }
     }
   },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    dependencies = {
-      -- Copilot base plugin required
-      "github/copilot.vim",
-      -- Required Lua async tools
-      { "nvim-lua/plenary.nvim", branch = "master" },
-    },
-    build = "make tiktoken", -- needed on macOS/Linux
-    opts = {
-      -- Optional custom settings
-    },
-  },
-}
-
-return {
   -- Base Copilot (required by CopilotChat)
   {
     "github/copilot.vim",
@@ -65,6 +49,7 @@ return {
       -- keep default for now; we can tune later
     },
   },
+
   {
     "preservim/tagbar",
     cmd = "TagbarToggle",

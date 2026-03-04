@@ -11,6 +11,61 @@ return {
     }
   },
   {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      -- Copilot base plugin required
+      "github/copilot.vim",
+      -- Required Lua async tools
+      { "nvim-lua/plenary.nvim", branch = "master" },
+    },
+    build = "make tiktoken", -- needed on macOS/Linux
+    opts = {
+      -- Optional custom settings
+    },
+  },
+}
+
+return {
+  -- Base Copilot (required by CopilotChat)
+  {
+    "github/copilot.vim",
+    lazy = false,        -- ensure base Copilot loads
+  },
+
+  -- Copilot Chat
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = {
+      "github/copilot.vim",
+      { "nvim-lua/plenary.nvim", branch = "master" },
+    },
+    build = "make tiktoken",       -- required on macOS/Linux
+    -- EITHER force-load:
+    -- lazy = false,
+
+    -- OR define clear load triggers (recommended):
+    cmd = {
+      "CopilotChat",
+      "CopilotChatOpen",
+      "CopilotChatClose",
+      "CopilotChatToggle",
+      "CopilotChatExplain",
+      "CopilotChatFix",
+      "CopilotChatReview",
+    },
+    keys = {
+      -- load on keypress; feel free to change bindings
+      { "<leader>ac", "<cmd>CopilotChat<cr>", desc = "Copilot Chat" },
+      { "<leader>ae", "<cmd>CopilotChatExplain<cr>", desc = "Explain code (Copilot)" },
+      { "<leader>af", "<cmd>CopilotChatFix<cr>",     desc = "Fix code (Copilot)" },
+      { "<leader>ar", "<cmd>CopilotChatReview<cr>",  desc = "Review diff (Copilot)" },
+    },
+
+    opts = {
+      -- keep default for now; we can tune later
+    },
+  },
+  {
     "preservim/tagbar",
     cmd = "TagbarToggle",
     keys = {
